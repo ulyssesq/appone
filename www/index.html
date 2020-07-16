@@ -41,14 +41,42 @@
     <script type="text/javascript" charset="utf-8" src="js/jquery.mobile-1.4.5.min.js"></script>
     <link rel="stylesheet" type="text/css" href="css/jquery.mobile-1.4.5.min.css"/>
     <link rel="stylesheet" type="text/css" href="css/index.css" />
-    <title>Product Manager</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+        h1 {
+            margin:0;
+            font-family: Arial;
+            padding:40px 20px;
+            background-color:#01303f;
+            color: #fff;
+            text-align: center;
+            font-size:24px;
+        }
+
+        div.ui-content {
+            padding: 20px;
+        }
+
+        a.ui-btn {
+            margin:20px;
+            display:inline-block;
+        }
+
+        li {
+            list-style-type: none;
+        }
+    </style>
+    <title>Gerenciador de Produtos</title>
 </head>
 
 <body>
     <div data-role="page" id="all">
 
         <div data-role="header">
-            <h1>Product Manager</h1>
+            <h1>Gerenciador de Produtos</h1>
             <a href="#new" class="ui-btn ui-btn-inline">Novo</a>
         </div><!-- /header -->
     
@@ -67,7 +95,7 @@
     <div data-role="page" id="new">
     
         <div data-role="header">
-            <h1>Product Manager</h1>
+            <h1>Gerenciador de Produtos</h1>
             <a href="#all" class="ui-btn ui-btn-inline">Ver Todos</a>
         </div><!-- /header -->
     
@@ -89,16 +117,23 @@
         function listProducts(){
             var items = [{id: 1, name: "Produto 1"},
                         {id: 2, name: "Produto 2"}]
+            
+            $('#all ul').empty();
 
-            $(items).each(function(element){
+            $(items).each(function(index, element){
+                // let li = document.createElement('li');
+                // li.innerText = element.name;
+                // wrapper.appendChild(li);
                  var row = '<li>' + element.name + '</li>'
-                 $('#list ul').append(row);
+                 $('#all ul').append(row);
             });
         };
 
         function showPage(href) {
             $('div[data-role=page]').hide();
             if (href == "#all") {
+
+                listProducts();
                 $("#all").show();
             }
             else if (href == "#new") {
