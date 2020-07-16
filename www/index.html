@@ -46,6 +46,7 @@
             margin: 0;
             padding: 0;
         }
+
         h1 {
             margin:0;
             font-family: Arial;
@@ -56,8 +57,33 @@
             font-size:24px;
         }
 
-        div.ui-content {
-            padding: 20px;
+        div.ui-content ul {
+            margin:0px;
+            padding: 10px;
+        }
+
+        div.ui-content li {
+            /* display: flex;
+            flex-direction: row; */
+            padding-bottom: 10px;
+            display:block;
+            height: 40px;
+        }
+
+        div.ui-content li img {
+            display: block;
+            width: 20%;
+            float: left;
+        }
+
+        div.ui-content li div {        
+            width: 75%;
+            float: right;            
+            font-size: 12px;
+        }
+
+        div.ui-content .item-preco {
+            display:block;
         }
 
         a.ui-btn {
@@ -81,8 +107,8 @@
         </div><!-- /header -->
     
         <div role="main" class="ui-content">
-            <ul data-role="listview">
-                
+            <ul data-role="listView">
+
             </ul>
         </div><!-- /content -->
     
@@ -100,7 +126,8 @@
         </div><!-- /header -->
     
         <div role="main" class="ui-content">
-            
+            <label for="text-basic">Nome:</label>
+            <input type="text" name="nome" id="text-basic" value="">
         </div><!-- /content -->
     
         <div data-role="footer">
@@ -115,18 +142,21 @@
         showPage("#all");
 
         function listProducts(){
-            var items = [{id: 1, name: "Produto 1"},
-                        {id: 2, name: "Produto 2"}]
             
-            $('#all ul').empty();
+            $.get("http://localhost:4000/api/products", function(data){
+                $('#all ul').empty();
+                $(data).each(function(index, element){
 
-            $(items).each(function(index, element){
-                // let li = document.createElement('li');
-                // li.innerText = element.name;
-                // wrapper.appendChild(li);
-                 var row = '<li>' + element.name + '</li>'
-                 $('#all ul').append(row);
-            });
+                    let img = `<img src='${element.img_url}'/>`;
+                    let spanNome = `<span class='item-nome'>${element.productName}</span>`;
+                    let spanPreco = `<span class='item-preco'>${element.price}</span>`;
+                    let spanDescricao = `<span class='item-preco'>${element.description}</span>`;
+                                
+                    let li = `<li>${img} <div>${spanNome} ${spanPreco} ${spanDescricao}</div></li>`;
+                    $('#all ul').append(li);
+
+                });
+            });          
         };
 
         function showPage(href) {
