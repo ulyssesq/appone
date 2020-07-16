@@ -83,17 +83,49 @@
     <script type="text/javascript" src="cordova.js"></script>
     <script type="text/javascript" src="js/index.js"></script>
     <script type="text/javascript">
-        app.initialize();        
+        app.initialize();
+        showPage("#all");
 
         function listProducts(){
             var items = [{id: 1, name: "Produto 1"},
                         {id: 2, name: "Produto 2"}]
 
-            // $(items).each(function(element){
-            //     var row = '<li>' + element.name + '</li>'
-            //     $('#list ul').append(row);
-            // });
+            $(items).each(function(element){
+                 var row = '<li>' + element.name + '</li>'
+                 $('#list ul').append(row);
+            });
         };
+
+        function showPage(href) {
+            $('div[data-role=page]').hide();
+            if (href == "#all") {
+                $("#all").show();
+            }
+            else if (href == "#new") {
+                $("#new").show();
+            }
+        }
+
+        $( "a" ).on( "click", function( event ) {
+            // Prevent the usual navigation behavior
+            event.preventDefault();
+
+            // Alter the url according to the anchor's href attribute, and
+            // store the data-foo attribute information with the url
+            var href = $(this).attr('href');
+            showPage(href);
+            $.mobile.navigate( href, {
+                //foo: $(this).attr("data-foo");
+
+                //setupPages(href);
+            });
+
+            // Hypothetical content alteration based on the url. E.g, make
+            // an Ajax request for JSON data and render a template into the page.
+            //alterContent( $(this).attr("href") );
+        });
+
+        
 
         
     </script>
