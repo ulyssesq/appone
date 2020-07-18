@@ -37,12 +37,12 @@
     * Create your own at http://cspisawesome.com
     -->
     <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: 'unsafe-inline' https://ssl.gstatic.com; style-src 'self' 'unsafe-inline'; media-src *" /> -->
-    <script type="text/javascript" charset="utf-8" src="js/jquery-3.5.1.min.js"></script>
-    <script type="text/javascript" charset="utf-8" src="js/jquery.mobile-1.4.5.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="css/jquery.mobile-1.4.5.min.css"/>
+    <script type="text/javascript" charset="utf-8" src="js/jquery.min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="js/jquery.mobile.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/jquery.mobile.css"/>
     <link rel="stylesheet" type="text/css" href="css/index.css" />
     <style>
-        body {
+        /* body {
             margin: 0;
             padding: 0;
         }
@@ -63,8 +63,8 @@
         }
 
         div.ui-content li {
-            /* display: flex;
-            flex-direction: row; */
+            display: flex;
+            flex-direction: row; 
             padding-bottom: 10px;
             display:block;
             height: 40px;
@@ -93,45 +93,86 @@
 
         li {
             list-style-type: none;
+        } */
+
+        ul {
+            padding:0px;
         }
+
+        ul li {
+            list-style-type: none;
+        }
+
+        ul li img {
+            width:100%;
+        }
+
+        ul li .item-nome {
+            display:inline-block;
+            width: 80%;
+        }
+
+        ul li .item-preco {
+            display:block;
+            color: red;
+            float: right;
+        }
+
+        ul li .item-descricao {
+            display:block;
+            margin-bottom: 20px;
+        }
+
+
     </style>
-    <title>Gerenciador de Produtos</title>
+    <title>App One</title>
 </head>
 
 <body>
-    <div data-role="page" id="all">
+    <div data-role="page" id="all" data-theme="b">
 
         <div data-role="header">
-            <h1>Gerenciador de Produtos</h1>
-            <a href="#new" class="ui-btn ui-btn-inline">Novo</a>
+            <h1>App One</h1>
+            
         </div><!-- /header -->
     
         <div role="main" class="ui-content">
+            <a href="#new" class="ui-btn ui-btn-inline">Novo</a>
             <ul data-role="listView">
 
             </ul>
+            
         </div><!-- /content -->
     
         <div data-role="footer">
-            <h4></h4>
+            
         </div><!-- /footer -->
     </div><!-- /page -->
     
     <!-- Start of second page -->
-    <div data-role="page" id="new">
+    <div data-role="page" id="new" data-theme="b">
     
         <div data-role="header">
-            <h1>Gerenciador de Produtos</h1>
-            <a href="#all" class="ui-btn ui-btn-inline">Ver Todos</a>
+            <h1>App One</h1>
+            
         </div><!-- /header -->
     
         <div role="main" class="ui-content">
             <label for="text-basic">Nome:</label>
             <input type="text" name="nome" id="text-basic" value="">
+
+            <label for="text-basic">Preço:</label>
+            <input type="text" name="nome" id="text-basic" value="">
+
+            <label for="text-basic">Descrição:</label>
+            <input type="text" name="nome" id="text-basic" value="">
+
+            <a id="btn-save" href="#" class="ui-btn ui-btn-inline">Salvar</a>
+            <a id="btn-all" href="#all" class="ui-btn ui-btn-inline">Voltar</a>
         </div><!-- /content -->
     
         <div data-role="footer">
-            <h4></h4>
+            
         </div><!-- /footer -->
     </div><!-- /page -->
    
@@ -139,7 +180,12 @@
     <script type="text/javascript" src="js/index.js"></script>
     <script type="text/javascript">
         app.initialize();
-        showPage("#all");
+
+        listProducts();
+        
+        $("#btn-all").click(function(){
+            listProducts();
+        });
 
         function listProducts(){
             
@@ -150,7 +196,7 @@
                     let img = `<img src='${element.img_url}'/>`;
                     let spanNome = `<span class='item-nome'>${element.productName}</span>`;
                     let spanPreco = `<span class='item-preco'>${element.price}</span>`;
-                    let spanDescricao = `<span class='item-preco'>${element.description}</span>`;
+                    let spanDescricao = `<span class='item-descricao'>${element.description}</span>`;
                                 
                     let li = `<li>${img} <div>${spanNome} ${spanPreco} ${spanDescricao}</div></li>`;
                     $('#all ul').append(li);
@@ -159,32 +205,32 @@
             });          
         };
 
-        function showPage(href) {
-            $('div[data-role=page]').hide();
-            if (href == "#all") {
+        // function showPage(href) {
+        //     $('div[data-role=page]').hide();
+        //     if (href == "#all") {
 
-                listProducts();
-                $("#all").show();
-            }
-            else if (href == "#new") {
-                $("#new").show();
-            }
-        }
+        //         listProducts();
+        //         $("#all").show();
+        //     }
+        //     else if (href == "#new") {
+        //         $("#new").show();
+        //     }
+        // }
 
-        $( "a" ).on( "click", function( event ) {
-            // Prevent the usual navigation behavior
-            event.preventDefault();
+        // $( "a" ).on( "click", function( event ) {
+        //     // Prevent the usual navigation behavior
+        //     event.preventDefault();
 
-            // Alter the url according to the anchor's href attribute, and
-            // store the data-foo attribute information with the url
-            var href = $(this).attr('href');
+        //     // Alter the url according to the anchor's href attribute, and
+        //     // store the data-foo attribute information with the url
+        //     var href = $(this).attr('href');
             
-            $.mobile.navigate( href, {});
+        //     $.mobile.navigate( href, {});
 
-            // Hypothetical content alteration based on the url. E.g, make
-            // an Ajax request for JSON data and render a template into the page.
-            showPage(href);
-        });
+        //     // Hypothetical content alteration based on the url. E.g, make
+        //     // an Ajax request for JSON data and render a template into the page.
+        //     showPage(href);
+        // });
     </script>
 
 
