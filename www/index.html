@@ -42,59 +42,6 @@
     <link rel="stylesheet" type="text/css" href="css/jquery.mobile.css"/>
     <link rel="stylesheet" type="text/css" href="css/index.css" />
     <style>
-        /* body {
-            margin: 0;
-            padding: 0;
-        }
-
-        h1 {
-            margin:0;
-            font-family: Arial;
-            padding:40px 20px;
-            background-color:#01303f;
-            color: #fff;
-            text-align: center;
-            font-size:24px;
-        }
-
-        div.ui-content ul {
-            margin:0px;
-            padding: 10px;
-        }
-
-        div.ui-content li {
-            display: flex;
-            flex-direction: row; 
-            padding-bottom: 10px;
-            display:block;
-            height: 40px;
-        }
-
-        div.ui-content li img {
-            display: block;
-            width: 20%;
-            float: left;
-        }
-
-        div.ui-content li div {        
-            width: 75%;
-            float: right;            
-            font-size: 12px;
-        }
-
-        div.ui-content .item-preco {
-            display:block;
-        }
-
-        a.ui-btn {
-            margin:20px;
-            display:inline-block;
-        }
-
-        li {
-            list-style-type: none;
-        } */
-
         ul {
             padding:0px;
         }
@@ -136,8 +83,8 @@
             
         </div><!-- /header -->
     
-        <div role="main" class="ui-content">
-            <a href="#new" class="ui-btn ui-btn-inline">Novo</a>
+        <div data-role="main" class="ui-content">
+            <a href="#new" class="ui-btn">Novo</a>
             <ul data-role="listView">
 
             </ul>
@@ -157,18 +104,26 @@
             
         </div><!-- /header -->
     
-        <div role="main" class="ui-content">
-            <label for="text-basic">Nome:</label>
-            <input type="text" name="nome" id="text-basic" value="">
+        <div data-role="main" class="ui-content">
+            <form id="product-form">
+                <label for="text-basic">Nome:</label>
+                <input type="text" name="productName" id="productName" value="">
 
-            <label for="text-basic">Preço:</label>
-            <input type="text" name="nome" id="text-basic" value="">
+                <label for="text-basic">Preço:</label>
+                <input type="text" name="price" id="price" value="">
 
-            <label for="text-basic">Descrição:</label>
-            <input type="text" name="nome" id="text-basic" value="">
+                <label for="text-basic">Descrição:</label>
+                <textarea cols="40" rows="8" name="description" id="description"></textarea>
+            </form>
 
-            <a id="btn-save" href="#" class="ui-btn ui-btn-inline">Salvar</a>
-            <a id="btn-all" href="#all" class="ui-btn ui-btn-inline">Voltar</a>
+
+            <a id="btn-save" href="#" class="ui-btn">Salvar</a>
+            <a id="btn-all" href="#all" class="ui-btn">Voltar</a>
+
+            
+            <div data-role="popup" id="message">
+            <p>Produto salvo com sucesso</p>
+            </div>
         </div><!-- /content -->
     
         <div data-role="footer">
@@ -187,8 +142,38 @@
             listProducts();
         });
 
-        function listProducts(){
-            
+        $("#btn-save").click(function(){
+            var jsonData = {
+                productName: $("#productName").val(),
+                price : $("#price").val(),
+                description : $("#description").val()
+            };
+
+            $.ajax({
+                type: 'POST',
+                url: 'http://localhost:4000/api/product',
+                data: JSON.stringify(jsonData), 
+                success: function(data) { 
+                    $("#message").popup('open');
+                    clearForm();
+                    
+                    setTimeout(function(){
+                        $("#message").popup('close');
+                    },2000);
+                    
+                },
+                contentType: "application/json",
+                dataType: 'json'
+            });
+        });
+
+        function clearForm(){
+            $("#productName").val('');
+            $("#price").val('');
+            $("#description").val('');
+        }
+
+        function listProducts(){            
             $.get("http://localhost:4000/api/products", function(data){
                 $('#all ul').empty();
                 $(data).each(function(index, element){
@@ -197,43 +182,13 @@
                     let spanNome = `<span class='item-nome'>${element.productName}</span>`;
                     let spanPreco = `<span class='item-preco'>${element.price}</span>`;
                     let spanDescricao = `<span class='item-descricao'>${element.description}</span>`;
-                                
                     let li = `<li>${img} <div>${spanNome} ${spanPreco} ${spanDescricao}</div></li>`;
                     $('#all ul').append(li);
 
                 });
             });          
         };
-
-        // function showPage(href) {
-        //     $('div[data-role=page]').hide();
-        //     if (href == "#all") {
-
-        //         listProducts();
-        //         $("#all").show();
-        //     }
-        //     else if (href == "#new") {
-        //         $("#new").show();
-        //     }
-        // }
-
-        // $( "a" ).on( "click", function( event ) {
-        //     // Prevent the usual navigation behavior
-        //     event.preventDefault();
-
-        //     // Alter the url according to the anchor's href attribute, and
-        //     // store the data-foo attribute information with the url
-        //     var href = $(this).attr('href');
-            
-        //     $.mobile.navigate( href, {});
-
-        //     // Hypothetical content alteration based on the url. E.g, make
-        //     // an Ajax request for JSON data and render a template into the page.
-        //     showPage(href);
-        // });
     </script>
-
-
 </body>
 
 </html>
